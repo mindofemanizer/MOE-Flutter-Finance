@@ -9,7 +9,7 @@ dependencies:
   moe_flutter_finance:
     git:
       url: https://github.com/mindofemanizer/MOE-Flutter-Finance.git
-      ref: master
+      ref: main
 ```
 
 ## Usage
