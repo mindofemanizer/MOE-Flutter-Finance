@@ -1,6 +1,6 @@
 # MOE-Flutter-Finance
 
-Finance package for MOE Flutter ecosystem — income, expenses, accounting.
+Finance package for MOE Flutter ecosystem â€” income, expenses, accounting.
 
 ## Installation
 
@@ -9,7 +9,7 @@ dependencies:
   moe_flutter_finance:
     git:
       url: https://github.com/mindofemanizer/MOE-Flutter-Finance.git
-      ref: master
+      ref: v1.0.0
 ```
 
 ## Usage
@@ -130,9 +130,9 @@ switch (summaryState) {
     
     // Net profit calculation
     if ((summary['netProfit'] ?? 0) > 0) {
-      print('💰 Profit!');
+      print('ðŸ’° Profit!');
     } else {
-      print('⚠️  Rugi atau break even');
+      print('âš ï¸  Rugi atau break even');
     }
   default:
     // loading/error
@@ -153,7 +153,7 @@ if (result is Ok) {
   // Check accounting equation: Assets = Liabilities + Equity
   final check = (balance['assets'] ?? 0) == 
                 (balance['liabilities'] ?? 0) + (balance['equity'] ?? 0);
-  print(check ? '✅ Akuntansi seimbang' : '⚠️ Ketidakseimbangan akuntansi');
+  print(check ? 'âœ… Akuntansi seimbang' : 'âš ï¸ Ketidakseimbangan akuntansi');
 }
 ```
 
@@ -172,14 +172,14 @@ if (result is Ok) {
 ## Accounting Categories
 
 **Revenue:**
-- `operating_revenue` — Pendapatan Operasional (primary business income)
-- `non_operating_revenue` — Pendapatan Non-Operasional (other income)
+- `operating_revenue` â€” Pendapatan Operasional (primary business income)
+- `non_operating_revenue` â€” Pendapatan Non-Operasional (other income)
 
 **Costs & Expenses:**
-- `cogs` — Harga Pokok Penjualan (HPP)
-- `operating_expenses` — Biaya Operasional (rent, utilities, salaries)
-- `capex` — Belanja Modal (equipment, furniture)
-- `tax` — Pajak
-- `interest` — Bunga
+- `cogs` â€” Harga Pokok Penjualan (HPP)
+- `operating_expenses` â€” Biaya Operasional (rent, utilities, salaries)
+- `capex` â€” Belanja Modal (equipment, furniture)
+- `tax` â€” Pajak
+- `interest` â€” Bunga
 
 Net Profit Formula: **Income - Expense = Net Profit**
