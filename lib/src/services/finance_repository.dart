@@ -31,8 +31,8 @@ class FinanceRepository {
         if (startDate != null) 'start_date': startDate.toIso8601String(),
         if (endDate != null) 'end_date': endDate.toIso8601String(),
         if (type != null) 'type': type.stringValue,
-        if (accountCategory != null) 'account_category': accountCategory,
-        if (category != null) 'category': category,
+        'account_category': ?accountCategory,
+        'category': ?category,
       };
       final response = await _dio.get('/transactions', queryParameters: params);
       final data = response.data as Map<String, dynamic>;
@@ -82,9 +82,9 @@ class FinanceRepository {
           'account_category': accountCategory.code,
           'amount': amount,
           'payment_method': paymentMethod,
-          if (description != null) 'description': description,
+          'description': ?description,
           if (occurredAt != null) 'occurred_at': occurredAt.toIso8601String(),
-          if (notes != null) 'notes': notes,
+          'notes': ?notes,
         },
       );
       return Ok(
@@ -110,11 +110,11 @@ class FinanceRepository {
       await _dio.patch(
         '/transactions/$id',
         data: {
-          if (category != null) 'category': category,
-          if (paymentMethod != null) 'payment_method': paymentMethod,
-          if (amount != null) 'amount': amount,
-          if (description != null) 'description': description,
-          if (notes != null) 'notes': notes,
+          'category': ?category,
+          'payment_method': ?paymentMethod,
+          'amount': ?amount,
+          'description': ?description,
+          'notes': ?notes,
         },
       );
       return const Ok(null);

@@ -38,5 +38,5 @@ class _TransactionTypeExpense extends TransactionType {
 }
 
 class ColorValue extends Color {
-  const ColorValue(int value) : super(value);
+  const ColorValue(super.value);
 }
