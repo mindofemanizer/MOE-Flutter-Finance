@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:moe_flutter_core/moe_flutter_core.dart';
 import 'package:moe_flutter_finance/src/config/finance_config.dart';
@@ -10,9 +9,8 @@ import 'package:moe_flutter_finance/src/models/account_category.dart';
 /// Repository for finance operations.
 class FinanceRepository {
   final Dio _dio;
-  final MoeFinanceConfig _config;
 
-  FinanceRepository(this._dio, this._config);
+  FinanceRepository(this._dio, MoeFinanceConfig _);
 
   // ── Transactions ───────────────────────────────────────────
 
@@ -46,10 +44,7 @@ class FinanceRepository {
     } on DioException catch (e) {
       return Err(mapDioErrorToFailure(e));
     } catch (e) {
-      return Err(AppFailure(
-        type: FailureType.unknown,
-        message: e.toString(),
-      ));
+      return Err(AppFailure(type: FailureType.unknown, message: e.toString()));
     }
   }
 
@@ -57,14 +52,13 @@ class FinanceRepository {
   Future<AppResult<TransactionModel>> getTransaction(String id) async {
     try {
       final response = await _dio.get('/transactions/$id');
-      return Ok(TransactionModel.fromJson(response.data as Map<String, dynamic>));
+      return Ok(
+        TransactionModel.fromJson(response.data as Map<String, dynamic>),
+      );
     } on DioException catch (e) {
       return Err(mapDioErrorToFailure(e));
     } catch (e) {
-      return Err(AppFailure(
-        type: FailureType.unknown,
-        message: e.toString(),
-      ));
+      return Err(AppFailure(type: FailureType.unknown, message: e.toString()));
     }
   }
 
@@ -80,29 +74,32 @@ class FinanceRepository {
     String? notes,
   }) async {
     try {
-      final response = await _dio.post('/transactions', data: {
-        'type': type.stringValue,
-        'category': category,
-        'account_category': accountCategory.code,
-        'amount': amount,
-        'payment_method': paymentMethod,
-        if (description != null) 'description': description,
-        if (occurredAt != null) 'occurred_at': occurredAt.toIso8601String(),
-        if (notes != null) 'notes': notes,
-      });
-      return Ok(TransactionModel.fromJson(response.data as Map<String, dynamic>));
+      final response = await _dio.post(
+        '/transactions',
+        data: {
+          'type': type.stringValue,
+          'category': category,
+          'account_category': accountCategory.code,
+          'amount': amount,
+          'payment_method': paymentMethod,
+          if (description != null) 'description': description,
+          if (occurredAt != null) 'occurred_at': occurredAt.toIso8601String(),
+          if (notes != null) 'notes': notes,
+        },
+      );
+      return Ok(
+        TransactionModel.fromJson(response.data as Map<String, dynamic>),
+      );
     } on DioException catch (e) {
       return Err(mapDioErrorToFailure(e));
     } catch (e) {
-      return Err(AppFailure(
-        type: FailureType.unknown,
-        message: e.toString(),
-      ));
+      return Err(AppFailure(type: FailureType.unknown, message: e.toString()));
     }
   }
 
   /// Update transaction.
-  Future<AppResult<void>> updateTransaction(String id, {
+  Future<AppResult<void>> updateTransaction(
+    String id, {
     String? category,
     String? paymentMethod,
     double? amount,
@@ -110,21 +107,21 @@ class FinanceRepository {
     String? notes,
   }) async {
     try {
-      await _dio.patch('/transactions/$id', data: {
-        if (category != null) 'category': category,
-        if (paymentMethod != null) 'payment_method': paymentMethod,
-        if (amount != null) 'amount': amount,
-        if (description != null) 'description': description,
-        if (notes != null) 'notes': notes,
-      });
+      await _dio.patch(
+        '/transactions/$id',
+        data: {
+          if (category != null) 'category': category,
+          if (paymentMethod != null) 'payment_method': paymentMethod,
+          if (amount != null) 'amount': amount,
+          if (description != null) 'description': description,
+          if (notes != null) 'notes': notes,
+        },
+      );
       return const Ok(null);
     } on DioException catch (e) {
       return Err(mapDioErrorToFailure(e));
     } catch (e) {
-      return Err(AppFailure(
-        type: FailureType.unknown,
-        message: e.toString(),
-      ));
+      return Err(AppFailure(type: FailureType.unknown, message: e.toString()));
     }
   }
 
@@ -136,10 +133,7 @@ class FinanceRepository {
     } on DioException catch (e) {
       return Err(mapDioErrorToFailure(e));
     } catch (e) {
-      return Err(AppFailure(
-        type: FailureType.unknown,
-        message: e.toString(),
-      ));
+      return Err(AppFailure(type: FailureType.unknown, message: e.toString()));
     }
   }
 
@@ -163,15 +157,12 @@ class FinanceRepository {
         'totalIncome': (data['total_income'] as num).toDouble(),
         'totalExpense': (data['total_expense'] as num).toDouble(),
         'netProfit': (data['net_profit'] as num).toDouble(),
-        'transactionCount': (data['transaction_count'] as num).toInt(),
+        'transactionCount': (data['transaction_count'] as num).toDouble(),
       });
     } on DioException catch (e) {
       return Err(mapDioErrorToFailure(e));
     } catch (e) {
-      return Err(AppFailure(
-        type: FailureType.unknown,
-        message: e.toString(),
-      ));
+      return Err(AppFailure(type: FailureType.unknown, message: e.toString()));
     }
   }
 
@@ -188,10 +179,7 @@ class FinanceRepository {
     } on DioException catch (e) {
       return Err(mapDioErrorToFailure(e));
     } catch (e) {
-      return Err(AppFailure(
-        type: FailureType.unknown,
-        message: e.toString(),
-      ));
+      return Err(AppFailure(type: FailureType.unknown, message: e.toString()));
     }
   }
 }

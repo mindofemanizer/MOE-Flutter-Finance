@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:moe_flutter_core/moe_flutter_core.dart';
-import 'package:moe_flutter_finance/src/config/finance_config.dart';
 import 'package:moe_flutter_finance/src/models/transaction_model.dart';
 import 'package:moe_flutter_finance/src/models/transaction_type.dart';
+import 'package:moe_flutter_finance/src/models/account_category.dart';
 import 'package:moe_flutter_finance/src/services/finance_repository.dart';
 
 /// State for transactions.
@@ -11,9 +11,13 @@ sealed class TransactionsState {
   const TransactionsState();
 }
 
-final class TransactionsInitial extends TransactionsState {}
+final class TransactionsInitial extends TransactionsState {
+  const TransactionsInitial();
+}
 
-final class TransactionsLoading extends TransactionsState {}
+final class TransactionsLoading extends TransactionsState {
+  const TransactionsLoading();
+}
 
 final class TransactionsLoaded extends TransactionsState {
   final List<TransactionModel> transactions;
@@ -73,10 +77,11 @@ class TransactionsNotifier extends StateNotifier<TransactionsState> {
       notes: notes,
     );
 
-    if (result is Ok && state is TransactionsLoaded) {
+    if (result case Ok(:final data)) {
+      if (state is! TransactionsLoaded) return result;
       final loaded = state as TransactionsLoaded;
       // Insert at beginning (newest first)
-      final updated = [result.data, ...loaded.transactions];
+      final updated = [data, ...loaded.transactions];
       state = TransactionsLoaded(updated);
     }
 
@@ -86,7 +91,8 @@ class TransactionsNotifier extends StateNotifier<TransactionsState> {
   Future<void> deleteTransaction(String id) async {
     final result = await _repository.deleteTransaction(id);
 
-    if (result is Ok && state is TransactionsLoaded) {
+    if (result case Ok()) {
+      if (state is! TransactionsLoaded) return;
       final loaded = state as TransactionsLoaded;
       final filtered = loaded.transactions.where((t) => t.id != id).toList();
       state = TransactionsLoaded(filtered);
@@ -99,9 +105,13 @@ sealed class SummaryState {
   const SummaryState();
 }
 
-final class SummaryInitial extends SummaryState {}
+final class SummaryInitial extends SummaryState {
+  const SummaryInitial();
+}
 
-final class SummaryLoading extends SummaryState {}
+final class SummaryLoading extends SummaryState {
+  const SummaryLoading();
+}
 
 final class SummaryLoaded extends SummaryState {
   final Map<String, double> summary;
@@ -163,11 +173,12 @@ final financeRepositoryProvider = Provider<FinanceRepository>((ref) {
 });
 
 /// Provider for TransactionsNotifier.
-final transactionsProvider = StateNotifierProviderFactory<TransactionsNotifier>(
-  (ref) => TransactionsNotifier(ref.watch(financeRepositoryProvider)),
-);
+final transactionsProvider =
+    StateNotifierProvider<TransactionsNotifier, TransactionsState>(
+      (ref) => TransactionsNotifier(ref.watch(financeRepositoryProvider)),
+    );
 
 /// Provider for SummaryNotifier.
-final summaryProvider = StateNotifierProviderFactory<SummaryNotifier>(
+final summaryProvider = StateNotifierProvider<SummaryNotifier, SummaryState>(
   (ref) => SummaryNotifier(ref.watch(financeRepositoryProvider)),
 );

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 /// Transaction type (income or expense).
 sealed class TransactionType {
   const TransactionType();

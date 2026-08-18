@@ -1,3 +1,9 @@
+import 'package:equatable/equatable.dart';
+
+import 'package:moe_flutter_core/moe_flutter_core.dart';
+import 'package:moe_flutter_finance/src/models/account_category.dart';
+import 'package:moe_flutter_finance/src/models/transaction_type.dart';
+
 /// Model representing a financial transaction.
 class TransactionModel extends Equatable {
   final String id;
@@ -30,8 +36,7 @@ class TransactionModel extends Equatable {
     required this.updatedAt,
     this.createdBy,
     this.notes,
-  }) : assert amount > 0,
-       assert currency != null;
+  }) : assert(amount > 0);
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) {
     return TransactionModel(

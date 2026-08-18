@@ -28,7 +28,7 @@ void main() {
 
   group('TransactionModel', () {
     test('formattedAmount returns currency formatted string', () {
-      const transaction = TransactionModel(
+      final transaction = TransactionModel(
         id: 't1',
         referenceNumber: 'REF-001',
         type: TransactionType.income,
@@ -79,7 +79,7 @@ void main() {
     });
 
     test('toJson round-trips correctly', () {
-      const transaction = TransactionModel(
+      final transaction = TransactionModel(
         id: 't1',
         referenceNumber: 'REF-001',
         type: TransactionType.expense,

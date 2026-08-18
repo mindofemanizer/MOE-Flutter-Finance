@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import 'package:moe_flutter_core/moe_flutter_core.dart';
+
 /// Configuration for MOE Finance module.
 class MoeFinanceConfig extends Equatable {
   final String apiUrl;
